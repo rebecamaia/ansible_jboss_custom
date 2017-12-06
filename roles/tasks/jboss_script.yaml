@@ -1,0 +1,7 @@
+
+- copy:
+    src: roles/files/jboss.sh
+    dest: /usr/bin/jboss
+    owner: "root"
+    group: "root"
+    mode: "u+x"

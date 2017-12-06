@@ -1,0 +1,13 @@
+
+    - name: "xms"
+      prompt: "Define Xms value for installation (default: 3g)"
+      default: "3g"
+    - name: "xmx"
+      prompt: "Define Xmx value for installation (default: 10g)"
+      default: "10g"
+    - name: "maxpermsize"
+      prompt: "Define MaxPermSize value for installation (default: 1200m)"
+      default: "1200m"
+    - name: "instancename"
+      prompt: "Define instance name for installation (default: instance1)"
+      default: "instance1"

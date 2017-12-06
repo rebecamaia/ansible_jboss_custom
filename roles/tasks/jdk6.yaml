@@ -1,0 +1,11 @@
+
+- name: Download JDK6
+  get_url:
+    url: https://cooperacao.info.ufrn.br/download/jdk-6u45-linux-x64-rpm.bin
+    validate_certs: no
+    headers: "Cookie: oraclelicense=accept-securebackup-cookie"
+    dest: /tmp/
+    mode: "u+x"
+
+- name: Run JDK RPM
+  shell: /tmp/jdk-6u45-linux-x64-rpm.bin

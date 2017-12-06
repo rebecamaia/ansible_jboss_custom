@@ -1,14 +1,34 @@
 ---
-- hosts: jboss4
+#initially only considering CENTOS enviroments and JBOSS 4
+- hosts: all
   remote_user: root
 
+#  vars:
+#    - include: vars/vars.yaml
+
+  vars_prompt:
+ 
+    - name: "xms"
+      prompt: "Define Xms value for installation (default: 3g)"
+      default: "3g"
+    - name: "xmx"
+      prompt: "Define Xmx value for installation (default: 10g)"
+      default: "10g"
+    - name: "maxpermsize"
+      prompt: "Define MaxPermSize value for installation (default: 1200m)"
+      default: "1200m"
+    - name: "instancename"
+      prompt: "Define instance name for installation (default: instance1)"
+      default: "instance1"
+    - name: "httpport"
+      prompt: "Define port for HTTP binding (default: 8080)"
+      default: "8080"
+    - name: "ajpport"
+      prompt: "Define port for AJP binding (default: 9009)"
+      default: "9009"
+
   tasks:
+    - include: roles/tasks/jdk6.yaml
+    - include: roles/tasks/userdir.yaml
     - include: roles/tasks/jboss4.yaml
-
-
-
-- hosts: jboss5
-  remote_user: root
-
-  tasks:
-    - include: roles/tasks/jboss5.yaml
+    - include: roles/tasks/jboss_script.yaml
