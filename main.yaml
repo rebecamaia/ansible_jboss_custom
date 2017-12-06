@@ -1,0 +1,14 @@
+---
+- hosts: jboss4
+  remote_user: root
+
+  tasks:
+    - include: roles/tasks/jboss4.yaml
+
+
+
+- hosts: jboss5
+  remote_user: root
+
+  tasks:
+    - include: roles/tasks/jboss5.yaml
