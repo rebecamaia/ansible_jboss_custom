@@ -1,14 +1,35 @@
+#Check if JBoss already exists
+
+- name: Check JBoss
+  stat:
+    path: "{{ item }}"
+  with_items:
+    - "/opt/jboss/"
+    - "/opt/jboss/server/{{ instancename }}/conf/jboss-service.xml"
+    - "/opt/jboss/server/{{ instancename }}/deploy/jboss-web.deployer/server.xml"
+    - "/opt/jboss/server/{{ instancename }}/conf/java_opts.conf"
+  register: check_file
+
 #Grabbing and unarchiving JBoss from custom source link into spcified folder.
 - name: Unarchive JBoss 4
   unarchive:
     src: https://cooperacao.info.ufrn.br/download/jboss-4.2.2.GA.tar.gz
-    dest: /opt
+    dest: /opt/
     remote_src: yes
+    validate_certs: no
+  with_items: "{{ check_file.results }}"
+  when:
+    - not item | skipped
+    - item.stat.exists == False
 
 #After unarchive is ran, it's necessary to change dir name
 - name: Rename JBoss Directory
   command: mv /opt/jboss-4.2.2.GA /opt/jboss
   become: yes
+  with_items: "{{ check_file.results }}"
+  when:
+    - not item | skipped
+    - item.stat.exists == False
 
 - name: Change owner and group for JBoss Dir
   file:
@@ -17,10 +38,18 @@
     owner: sistemas
     group: sistemas
     state: directory
+  with_items: "{{ check_file.results }}"
+  when:
+    - not item | skipped
+    - item.stat.exists == False
 
+#another kind of check here!!!!
 - name: Rename JBoss Instance Directory
   command: mv /opt/jboss/server/default /opt/jboss/server/{{ instancename }}
   become: yes
+  with_items: "{{ check_file.results }}"
+  when:
+    - item.stat.exists == False
 
 - name: Define values for java_opts
   template:

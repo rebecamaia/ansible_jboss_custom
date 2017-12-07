@@ -1,11 +1,12 @@
-#java_opt variables
-xms_value: "3g"
-xmx_value: "10g"
-maxpermsize: "1200m"
 
-#server variables
-http_port: "8080"
-ajp_port: "8009"
+  #java_opt variables
+  xms_value: "3g"
+  xmx_value: "10g"
+  maxpermsize: "1200m"
 
-#instance name
-instancename: "intance1"
+  #server variables
+  http_port: "8080"
+  ajp_port: "8009"
+
+  #instance name
+  instancename: "intance1"

@@ -1,0 +1,38 @@
+#Grabbing and unarchiving JBoss from custom source link into spcified folder.
+- name: Unarchive JBoss 4
+  unarchive:
+    src: http://cooperacao.info.ufrn.br/download/jboss-5.1.0.GA.tar.gz
+    dest: /opt/jboss
+    remote_src: yes
+
+#After unarchive is ran, it's necessary to change dir name
+#- name: Rename JBoss Directory
+#  command: mv /opt/jboss-4.2.2.GA /opt/jboss
+#  become: yes
+
+- name: Change owner and group for JBoss Dir
+  file:
+    recurse: yes
+    path: /opt/jboss
+    owner: sistemas
+    group: sistemas
+    state: directory
+
+- name: Rename JBoss Instance Directory
+  command: mv /opt/jboss/server/default /opt/jboss/server/{{ instancename }}
+  become: yes
+
+- name: Define values for java_opts
+  template:
+    src: java_opts.conf.j2
+    dest: /opt/jboss/server/{{ instancename }}/conf/java_opts.conf
+
+- name: Define values for server.xml
+  template:
+    src: server.xml.j2
+    dest: /opt/jboss/server/{{ instancename }}/deploy/jboss-web.deployer/server.xml
+
+- name: Define values for jboss-service.xml
+  template:
+    src: jboss-service.xml.j2
+    dest: /opt/jboss/server/{{ instancename }}/conf/jboss-service.xml

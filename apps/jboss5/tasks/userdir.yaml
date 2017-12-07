@@ -1,0 +1,15 @@
+
+- group:
+    name: sistemas
+    state: present
+
+- user:
+    name: sistemas
+    group: sistemas
+    shell: /bin/bash
+    home: /opt/sistemas/
+
+- name: Creates directory sistemas
+  file:
+    path: /opt/sistemas
+    state: directory

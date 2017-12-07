@@ -1,0 +1,4 @@
+  - include: jdk6.yaml
+  - include: userdir.yaml
+  - include: jboss5.yaml
+  - include: jboss_script.yaml
