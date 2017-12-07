@@ -1,6 +1,6 @@
 
 - copy:
-    src: roles/files/jboss.sh
+    src: files/jboss.sh
     dest: /usr/bin/jboss
     owner: "root"
     group: "root"

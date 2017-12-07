@@ -24,15 +24,15 @@
 
 - name: Define values for java_opts
   template:
-    src: roles/templates/java_opts.conf.j2
+    src: java_opts.conf.j2
     dest: /opt/jboss/server/{{ instancename }}/conf/java_opts.conf
 
 - name: Define values for server.xml
   template:
-    src: roles/templates/server.xml.j2
+    src: server.xml.j2
     dest: /opt/jboss/server/{{ instancename }}/deploy/jboss-web.deployer/server.xml
 
 - name: Define values for jboss-service.xml
   template:
-    src: roles/templates/jboss-service.xml.j2
+    src: jboss-service.xml.j2
     dest: /opt/jboss/server/{{ instancename }}/conf/jboss-service.xml
