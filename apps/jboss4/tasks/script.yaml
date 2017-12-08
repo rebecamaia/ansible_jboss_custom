@@ -1,7 +1,19 @@
+- git:
+    ssh_opts: "-o StrictHostKeyChecking=no"
+    accept_hostkey: true
+    repo: git@git.esig.com.br:infraestrutura/scripts/jboss-start.git
+    dest: /tmp/jboss_script
 
 - copy:
-    src: files/jboss.sh
-    dest: /usr/bin/jboss
-    owner: "root"
-    group: "root"
-    mode: "u+x"
+   src: /tmp/jboss_script/jboss
+   remote_src: yes
+   dest: /usr/bin/jboss
+   owner: "root"
+   group: "root"
+   mode: "u+x"
+
+- name: Clean Repo
+  file:
+    state: absent
+    path: /tmp/jboss_script
+
