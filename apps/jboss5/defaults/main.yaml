@@ -1,0 +1,13 @@
+
+  #java_opt variables
+  xms_value: "3g"
+  xmx_value: "10g"
+  maxpermsize: "1200m"
+
+  #profile variables
+  deploy_path: "/opt/sistemas/ear_sistemas/"
+
+  port_id: "default"
+
+  #instance name
+  instancename: "intance1"

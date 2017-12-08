@@ -1,5 +1,5 @@
 ---
-#initially only considering CENTOS enviroments and JBOSS 4
+
 - hosts: all
   remote_user: root
   roles:

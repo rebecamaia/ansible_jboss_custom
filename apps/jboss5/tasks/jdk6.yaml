@@ -1,4 +1,9 @@
 
+- name: check for Java
+  command: java -version
+  register: result
+  ignore_errors: True
+
 - name: Download JDK6
   get_url:
     url: https://cooperacao.info.ufrn.br/download/jdk-6u45-linux-x64-rpm.bin
@@ -6,6 +11,8 @@
     headers: "Cookie: oraclelicense=accept-securebackup-cookie"
     dest: /tmp/
     mode: "u+x"
+  when: result|failed or result|skipped
 
 - name: Run JDK RPM
   shell: /tmp/jdk-6u45-linux-x64-rpm.bin
+  when: result|failed or result|skipped

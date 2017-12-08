@@ -1,0 +1,57 @@
+#Check if JBoss already exists
+
+- name: Check JBoss Files
+  stat:
+    path: "{{ item }}"
+  with_items:
+    - "/opt/jboss"
+    - "/opt/jboss/server/{{ instancename }}/deploy/deploy/jbossweb.sar/server.xml"
+    - "/opt/jboss/server/{{ instancename }}/conf/java_opts.conf"
+    - "/opt/jboss/server/{{ instancename }}/conf/bootstrap/profile.xml"
+    - "/opt/jboss/server/{{ instancename }}/conf/bootstrap/vfs.xml"
+  register: check_file
+
+#Changing owner and group in case dir exists
+- name: Change owner and group for JBoss Dir
+  file:
+    recurse: yes
+    path: /opt/jboss
+    owner: sistemas
+    group: sistemas
+    state: directory
+  when:
+    - check_file.results[0].stat.exists == true
+
+- name: Rename JBoss Instance Directory
+  command: mv /opt/jboss/server/default /opt/jboss/server/{{ instancename }}
+  become: yes
+  when:
+    - check_file.results[0].stat.exists == true and check_file.results[3].stat.exists == false
+
+- name: Define values for java_opts
+  template:
+    src: java_opts.conf.j2
+    dest: /opt/jboss/server/{{ instancename }}/conf/java_opts.conf
+  when:
+    - check_file.results[2].stat.exists == false
+
+- name: Define values for server.xml
+  template:
+    src: server.xml.j2
+    dest: /opt/jboss/server/{{ instancename }}/deploy/jbossweb.sar/server.xml
+  when:
+    - check_file.results[1].stat.exists == false
+
+- name: Define values for profile.xml
+  template:
+    src: profile.xml.j2
+    dest: /opt/jboss/server/{{ instancename }}/conf/bootstrap/profile.xml
+  when:
+    - check_file.results[3].stat.exists == false
+
+- name: Define values for vfs.xml
+  template:
+    src: profile.xml.j2
+    dest: /opt/jboss/server/{{ instancename }}/conf/bootstrap/vfs.xml
+  when:
+    - check_file.results[4].stat.exists == false

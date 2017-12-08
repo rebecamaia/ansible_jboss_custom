@@ -13,3 +13,8 @@
   file:
     path: /opt/sistemas
     state: directory
+
+- name: Creates directory jboss
+  file:
+    path: /opt/jboss
+    state: directory
