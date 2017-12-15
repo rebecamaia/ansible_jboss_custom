@@ -5,10 +5,27 @@
     path: "{{ item }}"
   with_items:
     - "/opt/jboss"
-    - "/opt/jboss/server/{{ instancename }}/conf/jboss-service.xml"
-    - "/opt/jboss/server/{{ instancename }}/deploy/jboss-web.deployer/server.xml"
-    - "/opt/jboss/server/{{ instancename }}/conf/java_opts.conf"
+    - "/opt/jboss/server/{{ instance_control.value }}/conf/jboss-service.xml"
+    - "/opt/jboss/server/{{ instance_control.value }}/deploy/jboss-web.deployer/server.xml"
+    - "/opt/jboss/server/{{ instance_control.value }}/conf/java_opts.conf"
   register: check_file
+
+- name: Create Instace Dir
+  file:
+    path: /opt/jboss/server/{{ instance_control.value }}
+    state: directory
+
+- name: Copy instance dir
+  command: cp -r /opt/jboss/server/default/. /opt/jboss/server/{{ instance_control.value }}/
+  when:
+    - check_file.results[1].stat.exists == false
+
+- name: Activate instance
+  file:
+    path: /opt/jboss/server/{{ instance_control.value }}/.inativa
+    state: absent
+  when:
+    - check_file.results[1].stat.exists == false
 
 #Changing owner and group in case dir exists
 - name: Change owner and group for JBoss Dir
@@ -21,29 +38,76 @@
   when:
     - check_file.results[0].stat.exists == true
 
-- name: Rename JBoss Instance Directory
-  command: mv /opt/jboss/server/default /opt/jboss/server/{{ instancename }}
-  become: yes
-  when:
-    - check_file.results[0].stat.exists == true and check_file.results[3].stat.exists == false
-
 - name: Define values for java_opts
   template:
     src: java_opts.conf.j2
-    dest: /opt/jboss/server/{{ instancename }}/conf/java_opts.conf
-  when:
-    - check_file.results[3].stat.exists == false
+    dest: /opt/jboss/server/{{ instance_control.value }}/conf/java_opts.conf
+  notify: Restart JBoss
 
 - name: Define values for server.xml
   template:
     src: server.xml.j2
-    dest: /opt/jboss/server/{{ instancename }}/deploy/jboss-web.deployer/server.xml
-  when:
-    - check_file.results[2].stat.exists == false
+    dest: /opt/jboss/server/{{ instance_control.value }}/deploy/jboss-web.deployer/server.xml
+  notify: Restart JBoss
 
 - name: Define values for jboss-service.xml
   template:
     src: jboss-service.xml.j2
-    dest: /opt/jboss/server/{{ instancename }}/conf/jboss-service.xml
-  when:
-    - check_file.results[1].stat.exists == false
+    dest: /opt/jboss/server/{{ instance_control.value }}/conf/jboss-service.xml
+  notify: Restart JBoss
+
+- name: Create Ear Dir
+  file:
+    path: /opt/sistemas/ear_{{ instance_control.value }}
+    state: directory
+
+#this is an itteration, we should change the variables every time
+#alternatives:
+#set_facts before the template task
+
+- set_fact:
+    postgres_vars: "{{ instance_control.value }}.yaml"
+
+- name: Define values for postgres-ds
+  template:
+    src: postgres-ds.xml.j2
+    dest: /opt/sistemas/ear_{{ instance_control.value }}/postgres-ds.xml
+  notify: Restart JBoss
+
+- name: Add port configuration (port-binding)
+  template:
+    src: port-binding.xml.j2
+    dest: /opt/jboss/
+  notify: Restart JBoss
+
+#prevent change status for replacements????
+
+- replace:
+    path: /opt/jboss/server/{{ instance_control.value }}/conf/java_opts.conf
+    regexp: "(INSTNAME)"
+    replace: "{{ instance_control.value }}"
+  notify: Restart JBoss
+
+- replace:
+    path: /opt/jboss/server/{{ instance_control.value }}/deploy/jboss-web.deployer/server.xml
+    regexp: "(INSTNAME)"
+    replace: "{{ instance_control.value }}"
+  notify: Restart JBoss
+
+- replace:
+    path: /opt/jboss/server/{{ instance_control.value }}/conf/jboss-service.xml
+    regexp: "(DEPATH)"
+    replace: "file:/opt/sistemas/ear_{{ instance_control.value }}/"
+  notify: Restart JBoss
+
+- replace:
+    path: /opt/jboss/server/{{ instance_control.value }}/conf/jboss-service.xml
+    regexp: "(INSTNAME)"
+    replace: "{{ instance_control.value }}"
+  notify: Restart JBoss
+
+- replace:
+    path: /opt/jboss/server/{{ instance_control.value }}/conf/jboss-service.xml
+    regexp: "(BINDINGPORT)"
+    replace: "{{ instance_control.key }}"
+  notify: Restart JBoss

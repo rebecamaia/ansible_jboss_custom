@@ -1,0 +1,14 @@
+- name: Check JBoss Files
+  stat:
+    path: "{{ item }}"
+  with_items:
+    - "/opt/jboss/server/default"
+  register: check_file
+
+- name: Create inativa file
+  copy:
+    content: ""
+    dest: /opt/jboss/server/default/.inativa
+    force: no
+  when:
+    check_file.results[0].stat.exists == true

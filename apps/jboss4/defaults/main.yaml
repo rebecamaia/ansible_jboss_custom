@@ -1,12 +1,16 @@
-
+  
+  force_reinstall: false
   #java_opt variables
-  xms_value: "3g"
-  xmx_value: "10g"
-  maxpermsize: "1200m"
-
+  xms_value: "2g"
+  xmx_value: "5g"
+  maxpermsize: "700m"
+  
   #server variables
   http_port: "8080"
   ajp_port: "8009"
 
   #instance name
-  instancename: "intance1"
+  instancename:
+    "default": "desenv"
+    "port-01": "trei"
+

@@ -4,15 +4,29 @@
   stat:
     path: "{{ item }}"
   with_items:
-    - "/opt/jboss/server/{{ instancename }}/conf/jboss-service.xml"
-    - "/opt/jboss/server/{{ instancename }}/deploy/jboss-web.deployer/server.xml"
-    - "/opt/jboss/server/{{ instancename }}/conf/java_opts.conf"
+    - "/opt/jboss/server/{{ instancename.values()[0] }}/conf/jboss-service.xml"
+    - "/opt/jboss/server/{{ instancename.values()[0] }}/deploy/jboss-web.deployer/server.xml"
+    - "/opt/jboss/server/{{ instancename.values()[0] }}/conf/java_opts.conf"
+    - "/opt/jboss"
   register: check_file
+
+- name: Remove old installation if requested
+  file:
+    state: absent
+    path: "/opt/jboss"
+  when:
+    check_file.results[3].stat.exists == true and force_reinstall == true
+
+- name: Recreate jboss directory
+  file:
+    state: directory
+    path: "/opt/jboss"
+  when: force_reinstall == true
 
 #Grabbing and unarchiving JBoss from custom source link into specified dir.
 - name: Unarchive JBoss 4
   unarchive:
-    src: https://cooperacao.info.ufrn.br/download/jboss-4.2.2.GA.tar.gz
+    src: http://esig.com.br/portalsig/jboss-4.2.2.GA.tar.gz
     dest: /opt/jboss
     extra_opts: [--strip-components=1]
     remote_src: yes
@@ -21,3 +35,4 @@
     - check_file.results[0].stat.exists == false
       and check_file.results[1].stat.exists == false
       and check_file.results[2].stat.exists == false
+      or force_reinstall == true

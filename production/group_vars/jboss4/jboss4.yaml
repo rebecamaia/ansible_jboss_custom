@@ -1,3 +1,6 @@
+
+force_reinstall: false
+
 #java_opt variables
 xms_value: "3g"
 xmx_value: "10g"
@@ -8,4 +11,4 @@ http_port: "8080"
 ajp_port: "8009"
 
 #instance name
-instancename: "intance1"
+instancename: "desenv"

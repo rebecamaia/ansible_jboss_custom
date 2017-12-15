@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ===================================================================== -->
+<!--                                                                       -->
+<!--  JBoss Server Configuration                                           -->
+<!--                                                                       -->
+<!-- ===================================================================== -->
+
+<!-- $Id: postgres-ds.xml,v 1.1 2002/07/22 22:57:24 d_jencks Exp $ -->
+<!-- ==================================================================== -->
+<!--  Datasource config for Postgres                                      -->
+<!-- ==================================================================== -->
+
+<datasources>
+
+  	<xa-datasource>
+                <jndi-name>jdbc/{{ sigaa_jdbc }}</jndi-name>
+                <xa-datasource-class>org.postgresql.xa.PGXADataSource</xa-datasource-class>
+                <xa-datasource-property name="ServerName">{{ sigaa_servername }}</xa-datasource-property>
+                <xa-datasource-property name="PortNumber">{{ sigaa_port }}</xa-datasource-property>
+
+                <xa-datasource-property name="DatabaseName">{{ sigaa_db_name }}</xa-datasource-property>
+                <xa-datasource-property name="User">{{ sigaa_user }}</xa-datasource-property>
+                <xa-datasource-property name="Password">{{ sigaa_pw }}</xa-datasource-property>
+
+                <track-connection-by-tx/>
+
+                <min-pool-size>1</min-pool-size>
+                <max-pool-size>{{ sigaa_max_pool }}</max-pool-size>
+
+                <check-valid-connection-sql>select 1</check-valid-connection-sql>
+        </xa-datasource>
+
+    <xa-datasource>
+                <jndi-name>jdbc/{{ sipac_jdbc }}</jndi-name>
+                <xa-datasource-class>org.postgresql.xa.PGXADataSource</xa-datasource-class>
+                <xa-datasource-property name="ServerName">{{ sipac_servername }}</xa-datasource-property>
+                <xa-datasource-property name="PortNumber">{{ sipac_port }}</xa-datasource-property>
+
+                <xa-datasource-property name="DatabaseName">{{ sipac_db_name }}</xa-datasource-property>
+                <xa-datasource-property name="User">{{ sipac_user }}</xa-datasource-property>
+                <xa-datasource-property name="Password">{{ sipac_pw }}</xa-datasource-property>
+
+                <track-connection-by-tx/>
+
+                <min-pool-size>1</min-pool-size>
+                <max-pool-size>{{ sipac_max_pool }}</max-pool-size>
+
+                <check-valid-connection-sql>select 1</check-valid-connection-sql>
+        </xa-datasource>
+
+    <xa-datasource>
+                <jndi-name>jdbc/{{ sigrh_jdbc }}</jndi-name>
+                <xa-datasource-class>org.postgresql.xa.PGXADataSource</xa-datasource-class>
+                <xa-datasource-property name="ServerName">{{ sigrh_servername }}</xa-datasource-property>
+                <xa-datasource-property name="PortNumber">{{ sigrh_port }}</xa-datasource-property>
+
+                <xa-datasource-property name="DatabaseName">{{ sigrh_db_name }}</xa-datasource-property>
+                <xa-datasource-property name="User">{{ sigrh_user }}</xa-datasource-property>
+                <xa-datasource-property name="Password">{{ sigrh_pw }}</xa-datasource-property>
+
+                <track-connection-by-tx/>
+
+                <min-pool-size>1</min-pool-size>
+                <max-pool-size>{{ sigrh_max_pool }}</max-pool-size>
+
+                <check-valid-connection-sql>select 1</check-valid-connection-sql>
+        </xa-datasource>
+
+    <xa-datasource>
+                <jndi-name>jdbc/{{ log_jdbc }}</jndi-name>
+                <xa-datasource-class>org.postgresql.xa.PGXADataSource</xa-datasource-class>
+                <xa-datasource-property name="ServerName">{{ log_servername }}</xa-datasource-property>
+                <xa-datasource-property name="PortNumber">{{ log_port }}</xa-datasource-property>
+
+                <xa-datasource-property name="DatabaseName">{{ log_db_name }}</xa-datasource-property>
+                <xa-datasource-property name="User">{{ log_user }}</xa-datasource-property>
+                <xa-datasource-property name="Password">{{ log_pw }}</xa-datasource-property>
+
+                <track-connection-by-tx/>
+
+                <min-pool-size>1</min-pool-size>
+                <max-pool-size>{{ log_max_pool }}</max-pool-size>
+
+                <check-valid-connection-sql>select 1</check-valid-connection-sql>
+        </xa-datasource>
+    
+
+    <xa-datasource>
+                <jndi-name>jdbc/{{ comum_jdbc }}</jndi-name>
+                <xa-datasource-class>org.postgresql.xa.PGXADataSource</xa-datasource-class>
+                <xa-datasource-property name="ServerName">{{ comum_servername }}</xa-datasource-property>
+                <xa-datasource-property name="PortNumber">{{ comum_port }}</xa-datasource-property>
+
+                <xa-datasource-property name="DatabaseName">{{ comum_db_name }}</xa-datasource-property>
+                <xa-datasource-property name="User">{{ comum_user }}</xa-datasource-property>
+                <xa-datasource-property name="Password">{{ comum_pw }}</xa-datasource-property>
+
+                <track-connection-by-tx/>
+
+                <min-pool-size>1</min-pool-size>
+                <max-pool-size>{{ comum_max_pool }}</max-pool-size>
+
+                <check-valid-connection-sql>select 1</check-valid-connection-sql>
+        </xa-datasource>
+
+    <xa-datasource>
+                <jndi-name>jdbc/{{ certame_jdbc }}</jndi-name>
+                <xa-datasource-class>org.postgresql.xa.PGXADataSource</xa-datasource-class>
+                <xa-datasource-property name="ServerName">{{ certame_servername }}</xa-datasource-property>
+                <xa-datasource-property name="PortNumber">{{ certame_port }}</xa-datasource-property>
+
+                <xa-datasource-property name="DatabaseName">{{ certame_db_name }}</xa-datasource-property>
+                <xa-datasource-property name="User">{{ certame_user }}</xa-datasource-property>
+                <xa-datasource-property name="Password">{{ certame_pw }}</xa-datasource-property>
+
+                <track-connection-by-tx/>
+
+                <min-pool-size>1</min-pool-size>
+                <max-pool-size>{{ certame_max_pool }}</max-pool-size>
+
+                <check-valid-connection-sql>select 1</check-valid-connection-sql>
+        </xa-datasource>
+
+    <xa-datasource>
+                <jndi-name>jdbc/{{ arquivos_jdbc }}</jndi-name>
+                <xa-datasource-class>org.postgresql.xa.PGXADataSource</xa-datasource-class>
+                <xa-datasource-property name="ServerName">{{ arquivos_servername }}</xa-datasource-property>
+                <xa-datasource-property name="PortNumber">{{ arquivos_port }}</xa-datasource-property>
+
+                <xa-datasource-property name="DatabaseName">{{ arquivos_db_name }}</xa-datasource-property>
+                <xa-datasource-property name="User">{{ arquivos_user }}</xa-datasource-property>
+                <xa-datasource-property name="Password">{{ arquivos_pw }}</xa-datasource-property>
+
+                <track-connection-by-tx/>
+
+                <min-pool-size>1</min-pool-size>
+                <max-pool-size>{{ arquivos_max_pool }}</max-pool-size>
+
+                <check-valid-connection-sql>select 1</check-valid-connection-sql>
+        </xa-datasource>
+
+    <xa-datasource>
+                <jndi-name>jdbc/{{ node_jdbc }}</jndi-name>
+                <xa-datasource-class>org.postgresql.xa.PGXADataSource</xa-datasource-class>
+                <xa-datasource-property name="ServerName">{{ arquivos_servername }}</xa-datasource-property>
+                <xa-datasource-property name="PortNumber">{{ arquivos_port }}</xa-datasource-property>
+
+                <xa-datasource-property name="DatabaseName">{{ arquivos_db_name }}</xa-datasource-property>
+                <xa-datasource-property name="User">{{ arquivos_user }}</xa-datasource-property>
+                <xa-datasource-property name="Password">{{ arquivos_pw }}</xa-datasource-property>
+
+                <track-connection-by-tx/>
+
+                <min-pool-size>1</min-pool-size>
+                <max-pool-size>{{ arquivos_max_pool }}</max-pool-size>
+
+                <check-valid-connection-sql>select 1</check-valid-connection-sql>
+        </xa-datasource>
+
+</datasources>
+

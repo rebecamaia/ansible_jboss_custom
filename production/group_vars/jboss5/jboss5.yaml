@@ -1,15 +1,14 @@
 
-  #java_opt variables
-  xms_value: "3g"
-  xmx_value: "10g"
-  maxpermsize: "1200m"
+force_reinstall: false
 
-  #profile variables
-  deploy_path: "/opt/sistemas/ear_sistemas/"
+#java_opt variables
+xms_value: "3g"
+xmx_value: "10g"
+maxpermsize: "1200m"
 
-  #server variables
-  http_port: "8080"
-  ajp_port: "8009"
+#server variables
+http_port: "8080"
+ajp_port: "8009"
 
-  #instance name
-  instancename: "intance1"
+#instance name
+instancename: "desenv"

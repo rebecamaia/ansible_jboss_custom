@@ -3,11 +3,14 @@
     name: sistemas
     state: present
 
-- user:
+- name: Create user sistemas
+  user:
     name: sistemas
     group: sistemas
     shell: /bin/bash
     home: /opt/sistemas/
+    state: present
+  ignore_errors: yes
 
 - name: Creates directory sistemas
   file:

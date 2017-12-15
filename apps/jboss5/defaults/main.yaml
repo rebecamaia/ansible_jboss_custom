@@ -1,13 +1,79 @@
 
+  #control variables
+  force_reinstall: false
+  change_config: false
+
   #java_opt variables
-  xms_value: "3g"
-  xmx_value: "10g"
-  maxpermsize: "1200m"
+  xms_value: "2g"
+  xmx_value: "5g"
+  maxpermsize: "700m"
+  
+  #server variables
+  http_port: "8080"
+  ajp_port: "8009"
 
-  #profile variables
-  deploy_path: "/opt/sistemas/ear_sistemas/"
+  #port and instance name
+  instancename:
+    "default": "desenv"
+    "01": "homolog"
+    "02": "trein"
 
-  port_id: "default"
+  #postgres variables
 
-  #instance name
-  instancename: "intance1"
+  sigaa_jdbc: SIGAADB
+  sigaa_servername: bddesenv.esig.com.br
+  sigaa_port: 5432
+  sigaa_db_name: ifsc_desenvsigaaept
+  sigaa_user: sigaa
+  sigaa_pw: sigaa
+  sigaa_max_pool: 10
+
+  sipac_jdbc: SIPACDB
+  sipac_servername: bddesenv.esig.com.br
+  sipac_port: 5432
+  sipac_db_name: ifsc_desenv_administrativo
+  sipac_user: sipac
+  sipac_pw: sipac
+  sipac_max_pool: 20
+
+  sigrh_jdbc: SIGRHDB
+  sigrh_servername: bddesenv.esig.com.br
+  sigrh_port: 5432
+  sigrh_db_name: ifsc_desenv_administrativo
+  sigrh_user: sipac
+  sigrh_pw: sipac
+  sigrh_max_pool: 20
+
+  log_jdbc: LogOperacaoDB
+  log_servername: bddesenv.esig.com.br
+  log_port: 5432
+  log_db_name: ifsc_desenv_sistemas_log
+  log_user: sistemas_log
+  log_pw: sistemas_log
+  log_max_pool: 20
+
+  certame_jdbc: SIGCertameDB
+  certame_servername: bddesenv.esig.com.br
+  certame_port: 5432
+  certame_db_name: ifsc_desenv_sigcertame
+  certame_user: sigcertame
+  certame_pw: sigcertame
+  certame_max_pool: 20
+
+  comum_jdbc: ComumDB
+  comum_servername: bddesenv
+  comum_port: 5432
+  comum_db_name: ifsc_desenv_sistemas_comum
+  comum_user: comum_user
+  comum_pw: comum_user
+  comum_max_pool: 20
+
+  #Arquivos
+  arquivos_jdbc: ArquivosDB
+  node_jdbc: ArquivosNode1 
+  arquivos_servername: bddesenv.esig.com.br
+  arquivos_port: 5432
+  arquivos_db_name: ifsc_desenv_sistemas_comum
+  arquivos_user: arquivos
+  arquivos_pw: arquivos
+  arquivos_max_pool: 50

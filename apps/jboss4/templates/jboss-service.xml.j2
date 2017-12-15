@@ -187,16 +187,17 @@
       | during initialization that specifies how to connect to the bindings store.
       | StoreFactory: The org.jboss.services.binding.ServicesStoreFactory interface
       | implementation to create to obtain the ServicesStore instance.
-
+   -->
+   
    <mbean code="org.jboss.services.binding.ServiceBindingManager"
      name="jboss.system:service=ServiceBindingManager">
-     <attribute name="ServerName">ports-01</attribute>
-     <attribute name="StoreURL">${jboss.home.url}/docs/examples/binding-manager/sample-bindings.xml</attribute>
+     <attribute name="INSTNAME">BINDINGPORT</attribute>
+     <attribute name="StoreURL">${jboss.home.url}/port-binding.xml</attribute>
      <attribute name="StoreFactoryClassName">
        org.jboss.services.binding.XMLServicesStoreFactory
      </attribute>
    </mbean>
-   -->
+   
 
    <!-- ==================================================================== -->
    <!-- Class Loading                                                        -->
@@ -679,7 +680,7 @@
        -->
       <attribute name="URLs">
          	deploy/,
-	 	file:/opt/sistemas/ear_{{ instancename }}/	
+	 	DEPATH	
 	</attribute>
 
       <!-- Indicates if the scanner should recursively scan directories that

@@ -1,5 +1,15 @@
+
   - include: jdk6.yaml
+
   - include: userdir.yaml
+
   - include: install.yaml
+
+  - include: deactivate.yaml
+
   - include: configure.yaml
+    with_dict: "{{ instancename }}"
+    loop_control:
+      loop_var: instance_control
+
   - include: script.yaml

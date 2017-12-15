@@ -3,6 +3,7 @@
   command: java -version
   register: result
   ignore_errors: True
+  changed_when: false
 
 - name: Download JDK6
   get_url:

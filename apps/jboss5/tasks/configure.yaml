@@ -1,3 +1,4 @@
+
 #Check if JBoss already exists
 
 - name: Check JBoss Files
@@ -5,11 +6,29 @@
     path: "{{ item }}"
   with_items:
     - "/opt/jboss"
-    - "/opt/jboss/server/{{ instancename }}/deploy/deploy/jbossweb.sar/server.xml"
-    - "/opt/jboss/server/{{ instancename }}/conf/java_opts.conf"
-    - "/opt/jboss/server/{{ instancename }}/conf/bootstrap/profile.xml"
-    - "/opt/jboss/server/{{ instancename }}/conf/bootstrap/vfs.xml"
+    - "/opt/jboss/server/{{ instance_control.value }}/deploy/deploy/jbossweb.sar/server.xml"
+    - "/opt/jboss/server/{{ instance_control.value }}/conf/java_opts.conf"
+    - "/opt/jboss/server/{{ instance_control.value }}/conf/bootstrap/profile.xml"
+    - "/opt/jboss/server/{{ instance_control.value }}/conf/bootstrap/vfs.xml"
+    - "/opt/jboss/server/{{ instance_control.value }}"
   register: check_file
+
+- name: Create Instace Dir
+  file:
+    path: /opt/jboss/server/{{ instance_control.value }}
+    state: directory
+  when:
+    - check_file.results[5].stat.exists == false
+
+- name: Copy instance dir
+  command: cp -r /opt/jboss/server/default/. /opt/jboss/server/{{ instance_control.value }}/
+  when:
+    - check_file.results[2].stat.exists == false
+
+- name: Activate instance
+  file:
+    path: /opt/jboss/server/{{ instance_control.value }}/.inativa
+    state: absent
 
 #Changing owner and group in case dir exists
 - name: Change owner and group for JBoss Dir
@@ -22,36 +41,86 @@
   when:
     - check_file.results[0].stat.exists == true
 
-- name: Rename JBoss Instance Directory
-  command: mv /opt/jboss/server/default /opt/jboss/server/{{ instancename }}
-  become: yes
-  when:
-    - check_file.results[0].stat.exists == true and check_file.results[3].stat.exists == false
+
+#Check for controle variables
 
 - name: Define values for java_opts
   template:
     src: java_opts.conf.j2
-    dest: /opt/jboss/server/{{ instancename }}/conf/java_opts.conf
+    dest: /opt/jboss/server/{{ instance_control.value }}/conf/java_opts.conf
   when:
-    - check_file.results[2].stat.exists == false
-
+    - change_config == true or force_reinstall == true
+ 
 - name: Define values for server.xml
   template:
     src: server.xml.j2
-    dest: /opt/jboss/server/{{ instancename }}/deploy/jbossweb.sar/server.xml
+    dest: /opt/jboss/server/{{ instance_control.value }}/deploy/jbossweb.sar/server.xml
   when:
-    - check_file.results[1].stat.exists == false
-
+    - change_config == true or force_reinstall == true
+ 
 - name: Define values for profile.xml
   template:
     src: profile.xml.j2
-    dest: /opt/jboss/server/{{ instancename }}/conf/bootstrap/profile.xml
+    dest: /opt/jboss/server/{{ instance_control.value }}/conf/bootstrap/profile.xml
   when:
-    - check_file.results[3].stat.exists == false
-
+    - change_config == true or force_reinstall == true
+ 
 - name: Define values for vfs.xml
   template:
-    src: profile.xml.j2
-    dest: /opt/jboss/server/{{ instancename }}/conf/bootstrap/vfs.xml
+    src: vfs.xml.j2
+    dest: /opt/jboss/server/{{ instance_control.value }}/conf/bootstrap/vfs.xml
   when:
-    - check_file.results[4].stat.exists == false
+    - change_config == true or force_reinstall == true 
+
+- name: Create Ear Dir
+  file:
+    path: /opt/sistemas/ear_{{ instance_control.value }}
+    state: directory
+
+- name: Define values for postgres-ds
+  template:
+    src: postgres-ds.xml.j2
+    dest: /opt/sistemas/ear_{{ instance_control.value }}/postgres-ds.xml
+  notify: Restart JBoss
+  when:
+    - change_config == true or force_reinstall == true
+
+- replace:
+    path: /opt/jboss/server/{{ instance_control.value }}/conf/java_opts.conf
+    regexp: "(INSTNAME)"
+    replace: "{{ instance_control.value }}"
+  notify: Restart JBoss
+  when:
+    - change_config == true or force_reinstall == true
+
+- replace:
+    path: /opt/jboss/server/{{ instance_control.value }}/conf/java_opts.conf
+    regexp: "(PORTNUM)"
+    replace: "{{ instance_control.key }}"
+  notify: Restart JBoss
+  when:
+    - change_config == true or force_reinstall == true
+
+- replace:
+    path: /opt/jboss/server/{{ instance_control.value }}/conf/bootstrap/vfs.xml
+    regexp: "(INSTNAME)"
+    replace: "file:/opt/sistemas/ear_{{ instance_control.value }}"
+  notify: Restart JBoss
+  when:
+    - change_config == true or force_reinstall == true
+
+- replace:
+    path: /opt/jboss/server/{{ instance_control.value }}/conf/bootstrap/profile.xml
+    regexp: "(INSTNAME)"
+    replace: "file:/opt/sistemas/ear_{{ instance_control.value }}"
+  notify: Restart JBoss
+  when:
+    - change_config == true or force_reinstall == true
+
+- replace:
+    path: /opt/jboss/server/{{ instance_control.value }}/deploy/jbossweb.sar/server.xml
+    regexp: "(INSTNAME)"
+    replace: "{{ instance_control.value }}"
+  notify: Restart JBoss
+  when:
+    - change_config == true or force_reinstall == true

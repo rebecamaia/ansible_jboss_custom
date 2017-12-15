@@ -1,19 +1,21 @@
-- git:
-    ssh_opts: "-o StrictHostKeyChecking=no"
-    accept_hostkey: true
+
+- name: check out jboss repo
+  local_action: git
+  args:
     repo: git@git.esig.com.br:infraestrutura/scripts/jboss-start.git
     dest: /tmp/jboss_script
+  changed_when: false
 
 - copy:
    src: /tmp/jboss_script/jboss
-   remote_src: yes
    dest: /usr/bin/jboss
    owner: "root"
    group: "root"
    mode: "u+x"
 
 - name: Clean Repo
-  file:
-    state: absent
-    path: /tmp/jboss_script
-
+  local_action: file
+  args:
+      state: absent
+      path: /tmp/jboss_script
+  changed_when: false
